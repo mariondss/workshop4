@@ -22,6 +22,7 @@ export async function user(userId: number) {
   let lastSentMessage: string | null = null;
   let lastCircuit: Node[] = [];
 
+
   _user.get("/getLastReceivedMessage", (req, res) => {
     res.json({ result: lastReceivedMessage });
   });
@@ -30,22 +31,16 @@ export async function user(userId: number) {
     res.json({ result: lastSentMessage });
   });
 
-  // TODO implement the status route
   _user.get("/status", (req, res) => {
     res.send("live");
   });
 
+  _user.get("/getLastCircuit", (req, res) => {
+    res.status(200).json({result: lastCircuit.map((node) => node.nodeId)});
+  });
+
+
   // Route pour recevoir les messages
-  _user.post("/message", (req, res) => {
-    const { message } = req.body;
-    console.log(message);
-  });
-
-  _user.get("/getLastReceivedMessage", (req, res) => {
-    // Récupérer et renvoyer le dernier message reçu par l'utilisateur
-    res.json({ message: lastReceivedMessage });
-  });
-
   _user.post("/message", (req, res) => {
     const message = req.body.message;
 

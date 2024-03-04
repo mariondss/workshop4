@@ -4,6 +4,8 @@ import { BASE_ONION_ROUTER_PORT } from "../config";
 import http from "http";
 import { REGISTRY_PORT } from "../config";
 import {generateRsaKeyPair, exportPubKey, exportPrvKey, rsaDecrypt, symDecrypt} from "../crypto";
+import crypto from 'crypto';
+
 
 export async function simpleOnionRouter(nodeId: number) {
   const onionRouter = express();
@@ -69,7 +71,6 @@ export async function simpleOnionRouter(nodeId: number) {
     res.json({ result: privateKeyBase64 });
   });
 
-  // TODO implement the status route
   onionRouter.get("/status", (req, res) => {
     res.send("live");
   });

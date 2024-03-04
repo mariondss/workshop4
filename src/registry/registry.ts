@@ -40,8 +40,7 @@ export async function launchRegistry() {
 
   // Route GET pour récupérer la clé privée d'un nœud
   _registry.get("/getNodeRegistry", (req, res) => {
-    const registry = { nodes: nodeRegistry };
-    return res.json(registry);
+    res.json({ nodes: nodeRegistry });
   });
 
   _registry.get("/status", (req, res) => {

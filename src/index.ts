@@ -1,5 +1,5 @@
 import { launchOnionRouters } from "./onionRouters/launchOnionRouters";
-import { launchRegistry } from "./registry/registry";
+import {launchRegistry} from "./registry/registry";
 import { launchUsers } from "./users/launchUsers";
 
 export async function launchNetwork(nbNodes: number, nbUsers: number) {
@@ -14,3 +14,5 @@ export async function launchNetwork(nbNodes: number, nbUsers: number) {
 
   return [registry, ...onionServers, ...userServers];
 }
+
+

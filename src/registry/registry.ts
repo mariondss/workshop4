@@ -1,7 +1,6 @@
 import bodyParser from "body-parser";
 import express, { Request, Response } from "express";
 import { REGISTRY_PORT } from "../config";
-import { generateRsaKeyPair, exportPubKey } from "../crypto";
 
 export type Node = {
   nodeId: number;
@@ -17,8 +16,6 @@ export type GetNodeRegistryBody = {
   nodes: Node[];
 };
 
-export type NodeWithPrivateKey = Node & { privateKey: string };
-
 export async function launchRegistry() {
   const _registry = express();
   _registry.use(express.json());
@@ -29,23 +26,15 @@ export async function launchRegistry() {
 
   // /registerNode route
   _registry.post("/registerNode", async (req, res) => {
-    const { nodeId, pubKey }: RegisterNodeBody = req.body;
 
-    try {
-      // Générer une paire de clés RSA pour le nœud
-      const keyPair = await generateRsaKeyPair();
-      // Exporter la clé publique en format base64
-      const exportedPubKey = await exportPubKey(keyPair.publicKey);
+    const newNode: Node = {
+      nodeId: req.body.nodeId,
+      pubKey: req.body.pubKey,
+    };
 
-      // Enregistrer le nœud sur le registre
-      const newNode: Node = { nodeId, pubKey: exportedPubKey };
-      nodeRegistry.push(newNode);
+    nodeRegistry.push(newNode);
 
-      return res.status(201).json({ message: "Node registered successfully", node: newNode });
-    } catch (error) {
-      console.error("Error registering node:", error);
-      return res.status(500).json({ error: "Internal server error" });
-    }
+    res.status(200).send({ message: "Node registered successfully." });
   });
 
 
